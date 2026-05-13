@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IQテスト200問</title>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8398161859137802"
+     crossorigin="anonymous"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:"Yu Gothic",sans-serif;
+  background:#f6f3ff;
+  color:#333;
+}
+
+header{
+  background:#5e35b1;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:180px 1fr 180px;
+  gap:20px;
+  max-width:1400px;
+  margin:20px auto;
+  padding:0 12px;
+}
+
+.ad{
+  background:white;
+  border-radius:12px;
+  padding:10px;
+  min-height:300px;
+  box-shadow:0 2px 10px rgba(0,0,0,.12);
+}
+
+main{
+  background:white;
+  border-radius:16px;
+  padding:24px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.status{
+  font-weight:bold;
+}
+
+select{
+  padding:10px;
+  border-radius:8px;
+  font-size:16px;
+}
+
+.question{
+  font-size:24px;
+  line-height:1.7;
+  margin-bottom:24px;
+  background:#f1edff;
+  padding:18px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.choices{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+button{
+  border:none;
+  border-radius:12px;
+  padding:16px;
+  font-size:18px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.choice-btn{
+  background:#e1d8ff;
+}
+
+.choice-btn:hover{
+  background:#cbbcff;
+}
+
+.correct{
+  background:#7bd389!important;
+}
+
+.wrong{
+  background:#ff8a80!important;
+}
+
+.result{
+  margin-top:20px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  min-height:36px;
+}
+
+.next-btn,
+.restart-btn,
+.start-btn{
+  margin-top:20px;
+  width:100%;
+  background:#5e35b1;
+  color:white;
+}
+
+.final{
+  text-align:center;
+  font-size:28px;
+  line-height:1.8;
+}
+
+.note{
+  text-align:center;
+  font-size:13px;
+  color:#666;
+  margin-top:10px;
+}
+
+@media(max-width:900px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .choices{
+    grid-template-columns:1fr;
+  }
+
+  .ad{
+    min-height:auto;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>IQテスト200問</h1>
+  <p>法則・数列・推理問題に挑戦！</p>
+</header>
+
+<div class="layout">
+
+  <!-- 左広告 -->
+  <aside class="ad">
+
+    <!-- チェス -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8398161859137802"
+         data-ad-slot="5599163841"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+
+  </aside>
+
+  <main>
+
+    <div class="topbar">
+
+      <div>
+        問題数：
+        <select id="questionCount">
+          <option value="10">10問</option>
+          <option value="20">20問</option>
+          <option value="30" selected>30問</option>
+        </select>
+      </div>
+
+      <div class="status" id="status">
+        スタートしてください
+      </div>
+
+    </div>
+
+    <button class="start-btn" id="startBtn">
+      テスト開始
+    </button>
+
+    <div id="quizArea" style="display:none;">
+
+      <div class="question" id="question"></div>
+
+      <div class="choices" id="choices"></div>
+
+      <div class="result" id="result"></div>
+
+      <button class="next-btn" id="nextBtn">
+        次の問題へ
+      </button>
+
+      <button class="restart-btn" id="restartBtn">
+        もう一度遊ぶ
+      </button>
+
+      <div class="note">
+        ※これは娯楽用の簡易IQ風クイズです
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 右広告 -->
+  <aside class="ad">
+
+    <!-- チェス -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8398161859137802"
+         data-ad-slot="5599163841"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+
+  </aside>
+
+</div>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<script>
+
+const baseQuestions = [
+
+{
+question:"2, 4, 8, 16, ？",
+answer:"32",
+choices:["24","30","32","36"]
+},
+
+{
+question:"1, 1, 2, 3, 5, ？",
+answer:"8",
+choices:["6","7","8","10"]
+},
+
+{
+question:"3, 6, 9, 12, ？",
+answer:"15",
+choices:["14","15","16","18"]
+},
+
+{
+question:"A, C, E, G, ？",
+answer:"I",
+choices:["H","I","J","K"]
+},
+
+{
+question:"月曜日の3日後は？",
+answer:"木曜日",
+choices:["水曜日","木曜日","金曜日","土曜日"]
+},
+
+{
+question:"すべての猫は動物。ミケは猫。ミケは？",
+answer:"動物",
+choices:["植物","動物","鳥","魚"]
+},
+
+{
+question:"5人が全員と1回ずつ握手すると何回？",
+answer:"10回",
+choices:["5回","8回","10回","20回"]
+},
+
+{
+question:"□に入る数は？ 4 + □ = 11",
+answer:"7",
+choices:["5","6","7","8"]
+},
+
+{
+question:"赤・青・赤・青・赤・？",
+answer:"青",
+choices:["赤","青","黄","緑"]
+},
+
+{
+question:"大：小 = 高い：？",
+answer:"低い",
+choices:["重い","低い","長い","広い"]
+},
+
+{
+question:"10, 20, 30, 40, ？",
+answer:"50",
+choices:["45","50","55","60"]
+},
+
+{
+question:"100, 90, 80, 70, ？",
+answer:"60",
+choices:["65","60","55","50"]
+},
+
+{
+question:"1, 4, 9, 16, ？",
+answer:"25",
+choices:["20","24","25","36"]
+},
+
+{
+question:"2, 6, 12, 20, ？",
+answer:"30",
+choices:["24","28","30","32"]
+},
+
+{
+question:"犬：鳴く = 鳥：？",
+answer:"飛ぶ",
+choices:["泳ぐ","飛ぶ","走る","書く"]
+},
+
+{
+question:"右手を鏡に映すと？",
+answer:"左手のように見える",
+choices:["右手のまま","左手のように見える","足になる","消える"]
+},
+
+{
+question:"3つの箱にリンゴが2個ずつ。全部で？",
+answer:"6個",
+choices:["3個","5個","6個","8個"]
+},
+
+{
+question:"1時間30分は何分？",
+answer:"90分",
+choices:["60分","80分","90分","100分"]
+},
+
+{
+question:"同じ重さの球が3個で15kg。1個は？",
+answer:"5kg",
+choices:["3kg","4kg","5kg","6kg"]
+},
+
+{
+question:"『本』と関係が深いものは？",
+answer:"読む",
+choices:["飲む","読む","泳ぐ","眠る"]
+}
+
+];
+
+// ===== 200問生成 =====
+const quizData = [];
+
+for(let i=1;i<=10;i++){
+
+  baseQuestions.forEach(q=>{
+
+    quizData.push({
+      question:`【${i}】${q.question}`,
+      answer:q.answer,
+      choices:[...q.choices]
+    });
+
+  });
+
+}
+
+// ===== シャッフル =====
+function shuffle(array){
+
+  return array.sort(()=>Math.random()-0.5);
+
+}
+
+let quizzes=[];
+let currentQuiz=0;
+let score=0;
+let answered=false;
+
+const startBtn=document.getElementById("startBtn");
+const quizArea=document.getElementById("quizArea");
+const questionEl=document.getElementById("question");
+const choicesEl=document.getElementById("choices");
+const resultEl=document.getElementById("result");
+const nextBtn=document.getElementById("nextBtn");
+const restartBtn=document.getElementById("restartBtn");
+const statusEl=document.getElementById("status");
+
+startBtn.onclick=()=>{
+
+  const count=
+    Number(document.getElementById("questionCount").value);
+
+  quizzes=
+    shuffle([...quizData]).slice(0,count);
+
+  currentQuiz=0;
+  score=0;
+
+  startBtn.style.display="none";
+
+  quizArea.style.display="block";
+
+  loadQuiz();
+
+};
+
+function loadQuiz(){
+
+  answered=false;
+
+  resultEl.textContent="";
+
+  nextBtn.style.display="none";
+
+  choicesEl.innerHTML="";
+
+  const quiz=quizzes[currentQuiz];
+
+  statusEl.textContent=
+    `第${currentQuiz+1}問 / ${quizzes.length}問 ｜ 正解 ${score}`;
+
+  questionEl.textContent=
+    quiz.question;
+
+  shuffle([...quiz.choices]).forEach(choice=>{
+
+    const btn=
+      document.createElement("button");
+
+    btn.textContent=choice;
+
+    btn.className="choice-btn";
+
+    btn.onclick=()=>checkAnswer(btn,choice);
+
+    choicesEl.appendChild(btn);
+
+  });
+
+}
+
+function checkAnswer(button,selected){
+
+  if(answered)return;
+
+  answered=true;
+
+  const correctAnswer=
+    quizzes[currentQuiz].answer;
+
+  const buttons=
+    choicesEl.querySelectorAll("button");
+
+  buttons.forEach(btn=>{
+
+    if(btn.textContent===correctAnswer){
+
+      btn.classList.add("correct");
+
+    }
+
+  });
+
+  if(selected===correctAnswer){
+
+    score++;
+
+    button.classList.add("correct");
+
+    resultEl.textContent="正解！";
+
+  }else{
+
+    button.classList.add("wrong");
+
+    resultEl.textContent=
+      `不正解！ 正解は「${correctAnswer}」`;
+
+  }
+
+  nextBtn.style.display="block";
+
+}
+
+nextBtn.onclick=()=>{
+
+  currentQuiz++;
+
+  if(currentQuiz<quizzes.length){
+
+    loadQuiz();
+
+  }else{
+
+    showFinal();
+
+  }
+
+};
+
+restartBtn.onclick=()=>{
+
+  location.reload();
+
+};
+
+function showFinal(){
+
+  const percent=
+    Math.round((score/quizzes.length)*100);
+
+  let rank="";
+
+  if(percent>=90){
+
+    rank="Sランク：かなり鋭い推理力！";
+
+  }else if(percent>=70){
+
+    rank="Aランク：かなり良い成績！";
+
+  }else if(percent>=50){
+
+    rank="Bランク：平均以上！";
+
+  }else{
+
+    rank="Cランク：もう一度挑戦！";
+
+  }
+
+  questionEl.innerHTML=`
+    <div class="final">
+      テスト終了！<br>
+      ${quizzes.length}問中 ${score}問正解！<br>
+      正答率：${percent}%<br><br>
+      ${rank}
+    </div>
+  `;
+
+  choicesEl.innerHTML="";
+
+  resultEl.textContent="";
+
+  nextBtn.style.display="none";
+
+  restartBtn.style.display="block";
+
+  statusEl.textContent="終了";
+
+}
+
+</script>
+
+</body>
+</html>
